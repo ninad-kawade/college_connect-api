@@ -6,6 +6,7 @@ dotenv.config();
 
 const app = require('./src/app');
 const connectDB = require('./src/config/db');
+const { socketCorsOptions } = require('./src/config/corsOptions');
 const seedSuperAdmin = require('./src/services/seedSuperAdmin');
 const initChatSocket = require('./src/socket/chatSocket');
 
@@ -17,10 +18,7 @@ const startServer = async () => {
 
   const server = http.createServer(app);
   const io = new Server(server, {
-    cors: {
-      origin: process.env.CLIENT_URL || '*',
-      credentials: true,
-    },
+    cors: socketCorsOptions,
   });
 
   app.set('io', io);

@@ -36,6 +36,25 @@ const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
+const updateProfilePhoto = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    res.status(400);
+    throw new Error('Profile photo is required');
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { profileImage: `/uploads/${req.file.filename}` },
+    { new: true, runValidators: true }
+  ).populate('branch', 'name code totalYears');
+
+  res.status(200).json({
+    success: true,
+    message: 'Profile photo updated successfully',
+    data: user,
+  });
+});
+
 const getDashboard = asyncHandler(async (req, res) => {
   const [user, questionsAsked, questionsAnswered] = await Promise.all([
     User.findById(req.user._id).populate('branch', 'name code totalYears'),
@@ -68,5 +87,6 @@ const getDashboard = asyncHandler(async (req, res) => {
 module.exports = {
   getProfile,
   updateProfile,
+  updateProfilePhoto,
   getDashboard,
 };

@@ -5,6 +5,17 @@ const Branch = require('../models/Branch');
 const User = require('../models/User');
 const { buildAuthResponse } = require('../services/authService');
 
+const setAuthCookie = (res, token) => {
+  const expiresInDays = Number(process.env.JWT_COOKIE_EXPIRES_DAYS || 7);
+
+  res.cookie('token', token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: expiresInDays * 24 * 60 * 60 * 1000,
+  });
+};
+
 const signup = asyncHandler(async (req, res) => {
   const { name, email, password, branchId, year } = req.body;
 
@@ -87,10 +98,13 @@ const login = asyncHandler(async (req, res) => {
     throw new Error('Invalid email or password');
   }
 
+  const authData = buildAuthResponse(user);
+  setAuthCookie(res, authData.token);
+
   res.status(200).json({
     success: true,
     message: 'Login successful',
-    data: buildAuthResponse(user),
+    data: authData,
   });
 });
 
@@ -120,10 +134,13 @@ const adminLogin = asyncHandler(async (req, res) => {
     throw new Error('Invalid admin credentials');
   }
 
+  const authData = buildAuthResponse(user);
+  setAuthCookie(res, authData.token);
+
   res.status(200).json({
     success: true,
     message: 'Admin login successful',
-    data: buildAuthResponse(user),
+    data: authData,
   });
 });
 
@@ -137,6 +154,12 @@ const getMe = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  });
+
   res.status(200).json({
     success: true,
     message: 'Logout successful',

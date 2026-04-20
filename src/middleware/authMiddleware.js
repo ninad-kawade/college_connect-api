@@ -10,6 +10,10 @@ const protect = asyncHandler(async (req, res, next) => {
     token = req.headers.authorization.split(' ')[1];
   }
 
+  if (!token && req.cookies?.token) {
+    token = req.cookies.token;
+  }
+
   if (!token) {
     res.status(401);
     throw new Error('Not authorized, token missing');
