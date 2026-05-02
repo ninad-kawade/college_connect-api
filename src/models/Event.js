@@ -11,14 +11,36 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Description is required'],
     },
+    category: {
+      type: String,
+      enum: ['exam', 'event', 'placement', 'deadline', 'general'],
+      default: 'general',
+    },
+    visibility: {
+      type: String,
+      enum: ['public'],
+      default: 'public',
+    },
+    startsAt: {
+      type: Date,
+      required: [true, 'Event start date is required'],
+    },
+    endsAt: {
+      type: Date,
+      default: null,
+    },
     date: {
       type: Date,
-      required: [true, 'Event date is required'],
+      default: undefined,
     },
     status: {
       type: String,
       enum: ['ongoing', 'upcoming', 'ended'],
       default: 'upcoming',
+    },
+    isCancelled: {
+      type: Boolean,
+      default: false,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

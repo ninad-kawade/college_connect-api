@@ -32,10 +32,62 @@ const questionSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    status: {
+      type: String,
+      enum: ['open', 'answered', 'resolved', 'closed'],
+      default: 'open',
+      index: true,
+    },
     isResolved: {
       type: Boolean,
       default: false,
       index: true,
+    },
+    acceptedAnswer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Answer',
+      default: null,
+    },
+    isAnonymous: {
+      type: Boolean,
+      default: false,
+    },
+    views: {
+      type: Number,
+      default: 0,
+    },
+    lastActivityAt: {
+      type: Date,
+      default: Date.now,
+    },
+    attachments: [
+      {
+        fileUrl: String,
+        fileName: String,
+        fileType: String,
+        fileSize: Number,
+      },
+    ],
+    followedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    moderationStatus: {
+      type: String,
+      enum: ['visible', 'hidden', 'removed'],
+      default: 'visible',
+      index: true,
+    },
+    moderatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    moderatedAt: {
+      type: Date,
+      default: null,
     },
     answerCount: {
       type: Number,

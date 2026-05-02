@@ -40,6 +40,33 @@ const studyMaterialSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    fileType: {
+      type: String,
+      default: '',
+    },
+    fileSize: {
+      type: Number,
+      default: 0,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
+    status: {
+      type: String,
+      enum: ['published', 'hidden', 'removed'],
+      default: 'published',
+      index: true,
+    },
+    hiddenBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    hiddenReason: {
+      type: String,
+      default: '',
+    },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

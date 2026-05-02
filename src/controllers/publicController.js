@@ -9,7 +9,8 @@ const StudyMaterial = require('../models/StudyMaterial');
 const User = require('../models/User');
 
 const getPublicAnnouncements = asyncHandler(async (req, res) => {
-  const announcements = await Announcement.find({ visibility: 'public' })
+  // V2: All announcements are public-only
+  const announcements = await Announcement.find({})
     .populate('createdBy', 'name role')
     .sort({ isPinned: -1, createdAt: -1 });
 

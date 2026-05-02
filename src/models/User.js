@@ -61,6 +61,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    imagekitFileId: {
+      type: String,
+      default: '',
+    },
     bio: {
       type: String,
       trim: true,
@@ -79,6 +83,20 @@ const userSchema = new mongoose.Schema(
       default: 0,
     },
     upvotesReceivedCount: {
+      type: Number,
+      default: 0,
+    },
+    emailPreferences: {
+      announcementEmails: {
+        type: Boolean,
+        default: true,
+      },
+      eventEmails: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    adminWarningCount: {
       type: Number,
       default: 0,
     },

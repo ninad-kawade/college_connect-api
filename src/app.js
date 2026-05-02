@@ -13,16 +13,18 @@ const materialRoutes = require('./routes/materialRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 const answerRoutes = require('./routes/answerRoutes');
 const leaderboardRoutes = require('./routes/leaderboardRoutes');
+const savedItemRoutes = require('./routes/savedItemRoutes');
+const eventRoutes = require('./routes/eventRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const { corsOptions } = require('./config/corsOptions');
-
-const app = express();
+                                 
+const app = express();         
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({
@@ -41,8 +43,20 @@ app.use('/api/v1/materials', materialRoutes);
 app.use('/api/v1/questions', questionRoutes);
 app.use('/api/v1/answers', answerRoutes);
 app.use('/api/v1/leaderboard', leaderboardRoutes);
+app.use('/api/v1/saved-items', savedItemRoutes);
+app.use('/api/v1/events', eventRoutes);
+app.use('/api/v1/ai', aiRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
+
+
+
+
+
+
+
+
+

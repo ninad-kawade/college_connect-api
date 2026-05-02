@@ -12,6 +12,12 @@ const {
   updateAcademicYear,
   updateAcademicYearStatus,
   updateUserSection,
+  updateUserStatus,
+  getSectionChangeRequests,
+  reviewSectionChangeRequest,
+  getModerationActions,
+  createModerationAction,
+  updateModerationEntity,
   promoteStudents,
 } = require('../controllers/adminController');
 const { protect } = require('../middleware/authMiddleware');
@@ -30,6 +36,12 @@ router.route('/academic-years').post(createAcademicYear).get(getAcademicYears);
 router.route('/academic-years/:academicYearId').put(updateAcademicYear);
 router.route('/academic-years/:academicYearId/status').patch(updateAcademicYearStatus);
 router.route('/users/:userId/section').put(updateUserSection);
+router.route('/users/:userId/status').patch(updateUserStatus);
+router.get('/section-change-requests', getSectionChangeRequests);
+router.patch('/section-change-requests/:requestId', reviewSectionChangeRequest);
+router.get('/moderation/actions', getModerationActions);
+router.post('/moderation/actions', createModerationAction);
+router.patch('/moderation/:entityType/:entityId', updateModerationEntity);
 router.route('/promote-students').post(promoteStudents);
 
 module.exports = router;

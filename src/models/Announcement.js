@@ -12,34 +12,21 @@ const announcementSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    visibility: {
-      type: String,
-      enum: ['public', 'section'],
-      default: 'public',
-      index: true,
-    },
-    branch: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Branch',
-      default: null,
-    },
-    year: {
-      type: Number,
-      default: null,
-    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+      index: true,
     },
     isPinned: {
       type: Boolean,
       default: false,
+      index: true,
     },
   },
   { timestamps: true }
 );
 
-announcementSchema.index({ branch: 1, year: 1 });
+announcementSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('Announcement', announcementSchema);
